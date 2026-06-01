@@ -1,0 +1,13 @@
+django
+djangorestframework
+django-cors-headers
+django-prometheus
+prometheus-client
+pandas
+numpy
+scikit-learn
+joblib
+nltk
+Sastrawi
+pymysql
+python-dotenv

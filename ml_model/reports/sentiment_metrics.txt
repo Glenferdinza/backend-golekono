@@ -1,0 +1,28 @@
+============================================================
+SENTIMENT ANALYSIS - MODEL METRICS
+============================================================
+
+Model 1: Logistic Regression (TF-IDF)
+  Accuracy: 0.8519
+
+              precision    recall  f1-score   support
+
+     Negatif       0.80      0.83      0.81       452
+     Positif       0.89      0.86      0.88       709
+
+    accuracy                           0.85      1161
+   macro avg       0.84      0.85      0.85      1161
+weighted avg       0.85      0.85      0.85      1161
+
+
+Model 2: Neural Network (TF-IDF + Keras)
+  Accuracy: 0.8682
+
+              precision    recall  f1-score   support
+
+     Negatif       0.84      0.82      0.83       452
+     Positif       0.89      0.90      0.89       709
+
+    accuracy                           0.87      1161
+   macro avg       0.86      0.86      0.86      1161
+weighted avg       0.87      0.87      0.87      1161
