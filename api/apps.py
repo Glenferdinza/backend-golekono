@@ -12,7 +12,7 @@ class ApiConfig(AppConfig):
 
     def ready(self):
         # Prevent double loading when running in development reload mode
-        if os.environ.get('RUN_MAIN') == 'true' or not settings.DEBUG:
+        if os.environ.get('RUN_MAIN') == 'true' or not settings.DEBUG or os.environ.get('VERCEL') == '1':
             model_dir = os.path.join(settings.BASE_DIR, 'ml_model', 'models')
             
             # Load sentiment classification models
