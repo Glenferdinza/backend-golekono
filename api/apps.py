@@ -11,9 +11,7 @@ class ApiConfig(AppConfig):
     ml_models = {}
 
     def ready(self):
-        # Prevent double loading when running in development reload mode
-        if os.environ.get('RUN_MAIN') == 'true' or not settings.DEBUG or os.environ.get('VERCEL') == '1':
-            model_dir = os.path.join(settings.BASE_DIR, 'ml_model', 'models')
+        model_dir = os.path.join(settings.BASE_DIR, 'ml_model', 'models')
             
             # Load sentiment classification models
             self.ml_models['tfidf'] = joblib.load(os.path.join(model_dir, 'tfidf_vectorizer.joblib'))
