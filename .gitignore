@@ -45,3 +45,8 @@ db.sqlite3-journal
 # Environment variables
 .env
 
+# Ignore all other markdown documentation files (except README) to avoid AI traces
+*.md
+!README.md
+
+
