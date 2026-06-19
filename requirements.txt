@@ -11,3 +11,4 @@ nltk
 Sastrawi
 pymysql
 python-dotenv
+requests
