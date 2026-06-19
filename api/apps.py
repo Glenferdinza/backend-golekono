@@ -11,6 +11,11 @@ class ApiConfig(AppConfig):
     ml_models = {}
 
     def ready(self):
+        # Skip loading heavy models if remote ML service is configured or running on Vercel
+        if os.environ.get("ML_SERVICE_URL") or os.environ.get("VERCEL") == "1":
+            print("[ML AppConfig] Remote ML service configured or running on Vercel. Skipping local model loading!")
+            return
+
         model_dir = os.path.join(settings.BASE_DIR, 'ml_model', 'models')
         
         # Load sentiment classification models

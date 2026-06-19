@@ -835,6 +835,46 @@ def get_itinerary(request):
             
         suasana = clean_and_correct_text(raw_suasana)
         
+        # Check if remote ML Service is configured
+        import os
+        ml_service_url = os.environ.get("ML_SERVICE_URL")
+        if ml_service_url:
+            import requests
+            ml_service_url = ml_service_url.rstrip('/')
+            payload = {
+                'minat': minat,
+                'budget': budget,
+                'durasi': durasi,
+                'suasana': raw_suasana
+            }
+            try:
+                response = requests.post(f"{ml_service_url}/api/generate", json=payload, timeout=25)
+                if response.status_code == 200:
+                    ml_data = response.json()
+                    ITINERARY_COUNTER.inc()
+                    # Extract sentiment label for metrics
+                    sentiment_label = 'None'
+                    try:
+                        itinerary_days = ml_data.get('itinerary', {})
+                        if itinerary_days:
+                            first_day = list(itinerary_days.values())[0]
+                            if first_day:
+                                sentiment_label = first_day[0].get('sentiment_label', 'None')
+                    except Exception:
+                        pass
+                    SENTIMENT_COUNTER.labels(sentiment_label=sentiment_label).inc()
+                    return JsonResponse(ml_data)
+                else:
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': f"ML Service returned status code {response.status_code}: {response.text}"
+                    }, status=502)
+            except requests.exceptions.RequestException as e:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': f"Hubungan ke ML Service gagal: {str(e)}"
+                }, status=502)
+
         # Load ML components from AppConfig
         api_app = apps.get_app_config('api')
         tfidf = api_app.ml_models['tfidf']
